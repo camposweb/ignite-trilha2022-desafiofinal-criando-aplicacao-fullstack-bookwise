@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 import type { Metadata } from 'next'
-import { Nunito_Sans } from 'next/font/google'
+import { Nunito } from 'next/font/google'
 import './globals.css'
 
-const nunitoSans = Nunito_Sans({
+const nunitoSans = Nunito({
   weight: ['400', '700'],
   variable: '--font-nunito',
   subsets: ['latin'],
@@ -21,7 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${nunitoSans.variable} antialiased`}>{children}</body>
+      <body className={`${nunitoSans.variable} bg-gray-800 antialiased`}>
+        {children}
+      </body>
     </html>
   )
 }

@@ -35,6 +35,16 @@ const config: Config = {
         short: '140%',
         base: '160%',
       },
+      fontFamily: {
+        nunito: 'var(--font-nunito)',
+      },
+      backgroundImage: {
+        'image-login': 'url("./assets/image-login.png")',
+        sidebar: 'url("./assets/bg-sidebar.png")',
+      },
+      height: {
+        'height-sidebar': 'calc(100%-40px)',
+      },
     },
   },
   plugins: [],
