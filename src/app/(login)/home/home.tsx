@@ -20,7 +20,7 @@ export default function Home() {
     queryKey: ['books'],
     queryFn: async () => {
       const { data } = await api.get(`${env.NEXT_PUBLIC_BASE_URL}/api/books`)
-      return data
+      return data.books
     },
   })
 

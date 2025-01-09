@@ -4,8 +4,8 @@ import { tv, VariantProps } from 'tailwind-variants'
 
 const textInputContainer = tv({
   base: [
-    'bg-gray-800 py-3 px-4 rounded-md border border-solid border-gray-500 flex items-center',
-    'has-[input:focus]:border-green-200',
+    'bg-gray-800 py-3 px-4 group rounded-md duration-200 border border-solid border-gray-500 flex items-center',
+    'focus-within:border-green-200',
     'disabled:opacity-50 disabled:cursor-not-allowed',
   ],
   variants: {},
@@ -36,9 +36,12 @@ export const SearchInput = ({ className, ...props }: SearchInputType) => {
   return (
     <TextInputContainer>
       <input {...props} className={searchInput({ className })} />
-      <span className="">
-        <MagnifyingGlass size={20} className="text-gray-500" />
-      </span>
+      <button className="">
+        <MagnifyingGlass
+          size={20}
+          className="text-gray-500 transition-colors duration-200 group-focus-within:text-green-200"
+        />
+      </button>
     </TextInputContainer>
   )
 }
