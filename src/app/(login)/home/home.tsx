@@ -71,7 +71,7 @@ export default function Home() {
               Livros Populares
             </span>
             <Link
-              href={''}
+              href={'/home/explorar'}
               className="flex items-center gap-3 font-nunito text-sm font-bold leading-base text-purple-100"
             >
               Ver Todos

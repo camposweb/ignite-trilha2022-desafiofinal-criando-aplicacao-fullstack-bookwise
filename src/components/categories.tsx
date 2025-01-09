@@ -6,6 +6,7 @@ const categories = tv({
     'bg-transparent border border-solid border-purple-100 rounded-full py-2 px-5 transition',
     'text-purple-100 font-nunito font-normal leading-base text-base',
     'hover:text-gray-100 hover:bg-purple-200 hover:border-purple-100',
+    'data-[active=true]:text-gray-100 data-[active=true]:bg-purple-200 data-[active=true]:border-transparent',
   ],
 })
 
