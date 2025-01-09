@@ -107,7 +107,13 @@ export const Card = ({
             </div>
           </header>
           <div className="flex gap-5">
-            <Image src={coverUrl} alt={coverUrl} width={108} height={152} />
+            <Image
+              src={coverUrl}
+              alt={coverUrl}
+              width={108}
+              height={152}
+              className="h-[152px] w-[108px]"
+            />
             <div className={wrapper()}>
               <h1 className={titleBook()}>{title}</h1>
               <h3 className={authorBook()}>{author}</h3>
@@ -127,7 +133,13 @@ export const Card = ({
         </>
       ) : (
         <>
-          <Image src={coverUrl} alt={coverUrl} width={64} height={94} />
+          <Image
+            src={coverUrl}
+            alt={coverUrl}
+            width={64}
+            height={94}
+            className="h-[94px] w-[64px]"
+          />
           <div className={wrapper()}>
             <figcaption>
               <h1 className={titleBook()}>{title}</h1>

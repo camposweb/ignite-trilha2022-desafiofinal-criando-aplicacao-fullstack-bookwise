@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+  ratings  Rating[]
+
+  @@map("users")
+}
+
+model Book {
+  id          String @id @default(uuid())
+  name        String
+  author      String
+  sinopse     String
+  cover_url   String
+  total_pages Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  categories CategoriesOnBooks[]
+  ratings    Rating[]
+
+  @@map("books")
+}
+
+model Category {
+  id   String @id @default(uuid())
+  name String @unique
+
+  books CategoriesOnBooks[]
+
+  @@map("categories")
+}
+
+model CategoriesOnBooks {
+  bookId     String
+  categoryId String
+
+  book     Book     @relation(fields: [bookId], references: [id])
+  Category Category @relation(fields: [categoryId], references: [id])
+
+  @@id([bookId, categoryId])
+  @@map("categories_on_books")
+}
+
+model Rating {
+  id          String   @id @default(uuid())
+  rate        Int
+  description String
+  created_at  DateTime @default(now())
+
+  book   Book   @relation(fields: [bookId], references: [id])
+  bookId String
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@map("ratings")
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+  @@map("verifications_tokens")
+}

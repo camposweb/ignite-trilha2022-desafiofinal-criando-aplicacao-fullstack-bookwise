@@ -2,6 +2,7 @@
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
 import './globals.css'
+import ReactQueryProvider from './ReactQueryProvider'
 
 const nunitoSans = Nunito({
   weight: ['400', '700'],
@@ -22,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${nunitoSans.variable} bg-gray-800 antialiased`}>
-        {children}
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   )

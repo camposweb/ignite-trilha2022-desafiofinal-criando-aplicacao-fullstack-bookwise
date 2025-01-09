@@ -3,6 +3,7 @@ import imageLogin from '../assets/image-login.png'
 import googleIcon from '../assets/google-icon.png'
 import githubIcon from '../assets/github-icon.png'
 import rocketLauchIcon from '../assets/rocket-launch-icon.png'
+import Link from 'next/link'
 
 export default function PageLogin() {
   return (
@@ -37,12 +38,15 @@ export default function PageLogin() {
               </span>
               Entrar com o Github
             </button>
-            <button className="flex w-full gap-5 rounded-lg bg-gray-600 px-6 py-5 font-nunito text-lg font-bold leading-base text-gray-100">
+            <Link
+              href={'/home'}
+              className="flex w-full gap-5 rounded-lg bg-gray-600 px-6 py-5 font-nunito text-lg font-bold leading-base text-gray-100"
+            >
               <span>
                 <Image src={rocketLauchIcon} alt="Google Login" />
               </span>
               Acessar como visitante
-            </button>
+            </Link>
           </div>
         </div>
       </div>
