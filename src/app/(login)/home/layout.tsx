@@ -4,6 +4,7 @@ import { ReactNode } from 'react'
 import { Binoculars, ChartLineUp, SignIn } from '@phosphor-icons/react/dist/ssr'
 import logoBookWise from '../../assets/logo-bookwise.svg'
 import Image from 'next/image'
+import { NavLink } from '@/components/nav-link'
 
 interface HomeLayoutProps {
   children: ReactNode
@@ -17,21 +18,15 @@ export default function HomeLayout({ children }: HomeLayoutProps) {
           <Image src={logoBookWise} alt="Logo" className="h-8 w-32" />
         </Link>
         <nav className="mb-auto mt-16 flex flex-col gap-4">
-          <Link
-            href={''}
-            className="flex gap-2 font-nunito text-base font-bold leading-base text-gray-100"
-          >
-            <span className="mr-2 w-1 rounded-full bg-gradient-to-b from-[#7FD1CC] to-[#9694F5]" />
+          <NavLink href={'/home'}>
+            {/* <span className="mr-2 w-1 rounded-full bg-gradient-to-b from-[#7FD1CC] to-[#9694F5]" /> */}
             <ChartLineUp size={24} />
             Início
-          </Link>
-          <Link
-            href={''}
-            className="flex gap-2 font-nunito text-base font-bold leading-base text-gray-400 transition hover:text-gray-100"
-          >
+          </NavLink>
+          <NavLink href={'/home/explorar'}>
             <Binoculars size={24} />
             Explorar
-          </Link>
+          </NavLink>
         </nav>
         <footer className="flex justify-end">
           <Link

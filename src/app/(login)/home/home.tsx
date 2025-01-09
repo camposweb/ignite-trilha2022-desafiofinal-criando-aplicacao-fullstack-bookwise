@@ -1,5 +1,7 @@
 'use client'
 import { Card } from '@/components/card'
+import { api } from '@/lib/axios'
+import { env } from '@/lib/env'
 import { CaretRight, ChartLine } from '@phosphor-icons/react/dist/ssr'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
@@ -17,9 +19,8 @@ export default function Home() {
   const { data: books } = useQuery<BooksProps[]>({
     queryKey: ['books'],
     queryFn: async () => {
-      const response = await fetch('http://localhost:3000/api/books')
-      const data = await response.json()
-      return data.books
+      const { data } = await api.get(`${env.NEXT_PUBLIC_BASE_URL}/api/books`)
+      return data
     },
   })
 
