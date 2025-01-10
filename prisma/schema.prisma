@@ -69,7 +69,7 @@ model CategoriesOnBooks {
 
 model Rating {
   id          String   @id @default(uuid())
-  rate        Int
+  rate        Float
   description String
   created_at  DateTime @default(now())
 
