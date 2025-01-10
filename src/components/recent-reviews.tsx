@@ -77,14 +77,16 @@ export const RecentReviews = ({
       <figure className={base()}>
         <header className={header()}>
           <div className="flex gap-2">
-            <Image
-              src={userAvatar}
-              alt={userName}
-              width={40}
-              height={40}
-              quality={100}
-              className="h-10 w-10 rounded-full border border-solid border-green-100 bg-cover"
-            />
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-black bg-gradient-to-t from-[#9694F5] from-0% to-[#7FD1CC] to-100%">
+              <Image
+                src={userAvatar}
+                alt={userName}
+                width={40}
+                height={40}
+                quality={100}
+                className="h-10 w-10 rounded-full bg-black bg-cover"
+              />
+            </div>
             <div className="flex flex-col">
               <span className="font-nunito text-base font-normal leading-base text-gray-100">
                 {userName}
