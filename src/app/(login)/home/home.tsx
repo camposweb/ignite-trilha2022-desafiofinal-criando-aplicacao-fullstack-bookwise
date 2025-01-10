@@ -1,10 +1,23 @@
 'use client'
 import { Card } from '@/components/card'
+import { RecentReviews } from '@/components/recent-reviews'
 import { api } from '@/lib/axios'
 import { env } from '@/lib/env'
 import { CaretRight, ChartLine } from '@phosphor-icons/react/dist/ssr'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
+
+/* interface RecentReviewsProps {
+  id: string
+  userAvatar: string
+  userName: string
+  dateReview: string
+  coverUrl: string
+  title: string
+  author: string
+  rating: number
+  userReview: string
+} */
 
 interface BooksProps {
   id: string
@@ -13,14 +26,49 @@ interface BooksProps {
   sinopse: string
   cover_url: string
   total_pages: number
+  averageRating: number
+}
+
+interface UserProps {
+  id: string
+  name: string
+  image: string
+}
+interface RecentReviewsProps {
+  id: string
+  rate: number
+  description: string
+  created_at: string
+  book: BooksProps
+  User: UserProps
+}
+
+interface PopularBooksProps {
+  id: string
+  name: string
+  author: string
+  cover_url: string
+  averageRating: number
 }
 
 export default function Home() {
-  const { data: books } = useQuery<BooksProps[]>({
-    queryKey: ['books'],
+  const { data: recentsReviews } = useQuery<RecentReviewsProps[]>({
+    queryKey: ['recent-reviews'],
     queryFn: async () => {
-      const { data } = await api.get(`${env.NEXT_PUBLIC_BASE_URL}/api/books`)
-      return data.books
+      const { data } = await api.get(
+        `${env.NEXT_PUBLIC_BASE_URL}/api/recent-reviews`,
+      )
+      return data.recentsReviews
+    },
+  })
+
+  const { data: popularBooks } = useQuery<PopularBooksProps[]>({
+    queryKey: ['popular-books'],
+    queryFn: async () => {
+      const { data } = await api.get(
+        `${env.NEXT_PUBLIC_BASE_URL}/api/popular-books`,
+      )
+      return data.popularBooks
     },
   })
 
@@ -37,33 +85,20 @@ export default function Home() {
           <span className="font-nunito text-base font-normal leading-base text-gray-100">
             Avaliações mais recentes
           </span>
-          <Card
-            title="A revolução dos bichos"
-            author="George Orwell"
-            coverUrl={`https://grjgd93pjxvw.objectstorage.sa-saopaulo-1.oci.customer-oci.com/n/grjgd93pjxvw/b/bookwise/o/a-revolucao-dos-bixos.png`}
-            member="Jaxson Dias"
-            avalaliationDate="Hoje"
-            variants="recents"
-            rating={4}
-          />
-          <Card
-            title="A revolução dos bichos"
-            author="George Orwell"
-            coverUrl={`https://grjgd93pjxvw.objectstorage.sa-saopaulo-1.oci.customer-oci.com/n/grjgd93pjxvw/b/bookwise/o/a-revolucao-dos-bixos.png`}
-            member="Jaxson Dias"
-            avalaliationDate="Hoje"
-            variants="recents"
-            rating={4}
-          />
-          <Card
-            title="A revolução dos bichos"
-            author="George Orwell"
-            coverUrl={`https://grjgd93pjxvw.objectstorage.sa-saopaulo-1.oci.customer-oci.com/n/grjgd93pjxvw/b/bookwise/o/a-revolucao-dos-bixos.png`}
-            member="Jaxson Dias"
-            avalaliationDate="Hoje"
-            variants="recents"
-            rating={4}
-          />
+          {recentsReviews &&
+            recentsReviews.map((recentreview) => (
+              <RecentReviews
+                key={recentreview.id}
+                title={recentreview.book.name}
+                author={recentreview.book.author}
+                coverUrl={recentreview.book.cover_url}
+                userAvatar={recentreview.User.image}
+                userName={recentreview.User.name}
+                dateReview="Hoje"
+                userReview={recentreview.description}
+                rating={recentreview.rate}
+              />
+            ))}
         </article>
         <section className="mr-24">
           <div className="flex justify-between">
@@ -79,30 +114,16 @@ export default function Home() {
             </Link>
           </div>
           <div className="mt-4 flex flex-col gap-3">
-            <Card
-              title="A revolução dos bichos"
-              author="George Orwell"
-              coverUrl={`https://grjgd93pjxvw.objectstorage.sa-saopaulo-1.oci.customer-oci.com/n/grjgd93pjxvw/b/bookwise/o/a-revolucao-dos-bixos.png`}
-              rating={4}
-            />
-            <Card
-              title="A revolução dos bichos"
-              author="George Orwell"
-              coverUrl={`https://grjgd93pjxvw.objectstorage.sa-saopaulo-1.oci.customer-oci.com/n/grjgd93pjxvw/b/bookwise/o/a-revolucao-dos-bixos.png`}
-              rating={4}
-            />
-            <Card
-              title="A revolução dos bichos"
-              author="George Orwell"
-              coverUrl={`https://grjgd93pjxvw.objectstorage.sa-saopaulo-1.oci.customer-oci.com/n/grjgd93pjxvw/b/bookwise/o/a-revolucao-dos-bixos.png`}
-              rating={4}
-            />
-            <Card
-              title="A revolução dos bichos"
-              author="George Orwell"
-              coverUrl={`https://grjgd93pjxvw.objectstorage.sa-saopaulo-1.oci.customer-oci.com/n/grjgd93pjxvw/b/bookwise/o/a-revolucao-dos-bixos.png`}
-              rating={4}
-            />
+            {popularBooks &&
+              popularBooks.map((popularBook) => (
+                <Card
+                  key={popularBook.id}
+                  title={popularBook.name}
+                  author={popularBook.author}
+                  coverUrl={popularBook.cover_url}
+                  rating={popularBook.averageRating ?? 0}
+                />
+              ))}
           </div>
         </section>
       </div>
