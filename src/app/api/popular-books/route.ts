@@ -6,9 +6,22 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Method not allowed' }, { status: 405 })
   }
   try {
-    const popularBooks = await prisma.book.findMany({
+    const popularBooksWithRatings = await prisma.book.findMany({
       orderBy: { ratings: { _count: 'desc' } },
       take: 4,
+      include: {
+        ratings: true,
+      },
+    })
+
+    const popularBooks = popularBooksWithRatings.map((book) => {
+      return {
+        ...book,
+        // ratings: book.ratings.map((rating) => rating.rate),
+        averageRating:
+          book.ratings.reduce((acc, rating) => acc + rating.rate, 0) /
+          book.ratings.length,
+      }
     })
 
     return NextResponse.json({ popularBooks }, { status: 200 })
