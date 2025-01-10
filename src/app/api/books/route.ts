@@ -11,29 +11,43 @@ export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
     const categories = searchParams.get('categories')
 
-    const books = await prisma.book.findMany()
-
-    if (!categories) {
-      return NextResponse.json({ books }, { status: 200 })
-    }
-
-    // const Category = 'Programação'
-
-    const searchBooksWithQuery = await prisma.categoriesOnBooks.findMany({
-      where: {
-        Category: {
-          name: categories,
+    const books = await prisma.book.findMany({
+      include: {
+        ratings: true,
+        categories: {
+          include: {
+            Category: true,
+          },
         },
       },
     })
 
-    const getBooksId = searchBooksWithQuery.map((book) => book.bookId)
+    const booksWithRatings = books.map((book) => {
+      return {
+        ...book,
+        // ratings: book.ratings.map((rating) => rating.rate),
+        averageRating:
+          book.ratings.reduce((acc, rating) => acc + rating.rate, 0) /
+          book.ratings.length,
+      }
+    })
+
+    if (!categories) {
+      return NextResponse.json({ books: booksWithRatings }, { status: 200 })
+    }
 
     const booksWithFilter = await prisma.book.findMany({
       where: {
-        id: {
-          in: getBooksId,
+        categories: {
+          some: {
+            Category: {
+              name: categories,
+            },
+          },
         },
+      },
+      include: {
+        ratings: true,
       },
     })
 
