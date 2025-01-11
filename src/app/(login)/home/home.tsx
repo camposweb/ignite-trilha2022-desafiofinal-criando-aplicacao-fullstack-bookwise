@@ -29,7 +29,7 @@ interface BooksProps {
   averageRating: number
 }
 
-interface UserProps {
+export interface UserProps {
   id: string
   name: string
   image: string
@@ -38,9 +38,24 @@ interface RecentReviewsProps {
   id: string
   rate: number
   description: string
-  created_at: string
+  created_at: Date
   book: BooksProps
-  User: UserProps
+  user: UserProps
+}
+
+export interface RatingsProps {
+  id: string
+  rate: number
+  description: string
+  created_at: Date
+  user: UserProps
+}
+
+export interface CategoriesProps {
+  category: {
+    id: string
+    name: string
+  }
 }
 
 interface PopularBooksProps {
@@ -49,6 +64,9 @@ interface PopularBooksProps {
   author: string
   cover_url: string
   averageRating: number
+  total_pages: number
+  ratings: RatingsProps[]
+  categories: CategoriesProps[]
 }
 
 export default function Home() {
@@ -81,7 +99,7 @@ export default function Home() {
         </h1>
       </div>
       <div className="mt-10 flex justify-between gap-16">
-        <article className="flex w-full max-w-[608px] flex-col gap-3 2xl:max-w-none">
+        <article className="mb-10 flex w-full max-w-[608px] flex-col gap-3 2xl:max-w-none">
           <span className="font-nunito text-base font-normal leading-base text-gray-100">
             Avaliações mais recentes
           </span>
@@ -92,11 +110,12 @@ export default function Home() {
                 title={recentreview.book.name}
                 author={recentreview.book.author}
                 coverUrl={recentreview.book.cover_url}
-                userAvatar={recentreview.User.image}
-                userName={recentreview.User.name}
-                dateReview="Hoje"
+                userAvatar={recentreview.user.image}
+                userName={recentreview.user.name}
+                dateReview={recentreview.created_at}
                 userReview={recentreview.description}
                 rating={recentreview.rate}
+                className="hover:border-gray-600"
               />
             ))}
         </article>
@@ -115,15 +134,24 @@ export default function Home() {
           </div>
           <div className="mt-4 flex flex-col gap-3">
             {popularBooks &&
-              popularBooks.map((popularBook) => (
-                <Card
-                  key={popularBook.id}
-                  title={popularBook.name}
-                  author={popularBook.author}
-                  coverUrl={popularBook.cover_url}
-                  rating={popularBook.averageRating ?? 0}
-                />
-              ))}
+              popularBooks.map((popularBook) => {
+                const categories = popularBook.categories.map(
+                  (category) => category.category.name,
+                )
+                return (
+                  <Card
+                    key={popularBook.id}
+                    title={popularBook.name}
+                    author={popularBook.author}
+                    coverUrl={popularBook.cover_url}
+                    rating={popularBook.averageRating ?? 0}
+                    totalReviews={popularBook.ratings.length}
+                    totalPages={popularBook.total_pages}
+                    ratings={popularBook.ratings}
+                    categories={categories}
+                  />
+                )
+              })}
           </div>
         </section>
       </div>

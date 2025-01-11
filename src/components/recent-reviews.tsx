@@ -5,6 +5,12 @@ import { ComponentProps, useState } from 'react'
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating'
 import '@smastrom/react-rating/style.css'
 import Image from 'next/image'
+import dayjs from 'dayjs'
+import 'dayjs/locale/pt-br'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.locale('pt-br')
+dayjs.extend(relativeTime)
 
 const customStyles = {
   itemShapes: ThinRoundedStar,
@@ -18,14 +24,14 @@ const customStyles = {
 const recentReviews = tv({
   extend: Box,
   slots: {
-    base: 'flex flex-col w-full gap-5',
+    base: 'flex flex-col w-full gap-5 py-4 px-5 hover:border-gray-600 transition',
     header: 'flex justify-between',
     wrapper: 'flex flex-col',
     titleBook: 'font-nunito text-base font-bold leading-short text-gray-100',
     authorBook: 'text-sm font-normal leading-base text-gray-400',
     footer: 'mt-auto flex w-full',
     review: 'mt-auto flex w-full',
-    sinopse: 'font-nunito text-sm font-normal text-gray-300 line-clamp-4',
+    sinopse: 'font-nunito text-sm font-normal text-gray-300 mt-7',
   },
 })
 
@@ -46,7 +52,7 @@ type RecentReviewsType = ComponentProps<typeof Box> &
 interface RecentReviewsProps extends RecentReviewsType {
   userAvatar: string
   userName: string
-  dateReview: string
+  dateReview: Date
   coverUrl: string
   title: string
   author: string
@@ -92,7 +98,7 @@ export const RecentReviews = ({
                 {userName}
               </span>
               <span className="text-sm font-normal leading-base text-gray-400">
-                {dateReview}
+                {dayjs(dateReview).fromNow()}
               </span>
             </div>
           </div>

@@ -3,7 +3,7 @@ import { tv, VariantProps } from 'tailwind-variants'
 
 const box = tv({
   base: [
-    'bg-gray-700 flex rounded-lg relative py-4 px-5 gap-5 border-2 border-solid border-transparent hover:border-gray-600 transition',
+    'bg-gray-700 flex rounded-lg relative border-2 border-solid border-transparent',
   ],
 })
 
