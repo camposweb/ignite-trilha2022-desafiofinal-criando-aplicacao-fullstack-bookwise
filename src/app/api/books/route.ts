@@ -13,10 +13,10 @@ export async function GET(req: NextRequest) {
 
     const books = await prisma.book.findMany({
       include: {
-        ratings: true,
+        ratings: { include: { user: true } },
         categories: {
           include: {
-            Category: true,
+            category: true,
           },
         },
       },
@@ -40,18 +40,36 @@ export async function GET(req: NextRequest) {
       where: {
         categories: {
           some: {
-            Category: {
+            category: {
               name: categories,
             },
           },
         },
       },
       include: {
-        ratings: true,
+        ratings: { include: { user: { include: { ratings: true } } } },
+        categories: {
+          include: {
+            category: true,
+          },
+        },
       },
     })
 
-    return NextResponse.json({ books: booksWithFilter }, { status: 200 })
+    const booksWithFilterAndRatings = booksWithFilter.map((book) => {
+      return {
+        ...book,
+        // ratings: book.ratings.map((rating) => rating.rate),
+        averageRating:
+          book.ratings.reduce((acc, rating) => acc + rating.rate, 0) /
+          book.ratings.length,
+      }
+    })
+
+    return NextResponse.json(
+      { books: booksWithFilterAndRatings },
+      { status: 200 },
+    )
   } catch (error) {
     return NextResponse.json(
       { message: 'Algum erro ocorreu' + error },

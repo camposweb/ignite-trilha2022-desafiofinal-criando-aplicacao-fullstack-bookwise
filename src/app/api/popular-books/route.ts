@@ -10,7 +10,8 @@ export async function GET(req: NextRequest) {
       orderBy: { ratings: { _count: 'desc' } },
       take: 4,
       include: {
-        ratings: true,
+        ratings: { include: { user: true } },
+        categories: { include: { category: true } },
       },
     })
 

@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
       orderBy: { created_at: 'desc' },
       include: {
         book: true,
-        User: true,
+        user: true,
       },
     })
 
