@@ -1,11 +1,13 @@
+'use client'
 import Image from 'next/image'
-import imageLogin from '../assets/image-login.png'
-import googleIcon from '../assets/google-icon.png'
-import githubIcon from '../assets/github-icon.png'
-import rocketLauchIcon from '../assets/rocket-launch-icon.png'
+import imageLogin from '../../assets/image-login.png'
+import googleIcon from '../../assets/google-icon.png'
+import githubIcon from '../../assets/github-icon.png'
+import rocketLauchIcon from '../../assets/rocket-launch-icon.png'
 import Link from 'next/link'
+import { signIn } from 'next-auth/react'
 
-export default function PageLogin() {
+export default function Login() {
   return (
     <main className="grid min-h-screen grid-cols-1 p-5 xl:grid-cols-[1fr,2fr]">
       <div className="hidden max-w-[606px] items-center justify-center md:flex">
@@ -26,21 +28,27 @@ export default function PageLogin() {
             Faça seu login ou acesse como visitante.
           </h3>
           <div className="mt-10 flex flex-col gap-4">
-            <button className="flex gap-5 rounded-lg border-2 border-solid border-transparent bg-gray-600 px-6 py-5 font-nunito text-lg font-bold leading-base text-gray-100 hover:border-2 hover:border-gray-500">
+            <button
+              onClick={() => signIn('google')}
+              className="flex gap-5 rounded-lg border-2 border-solid border-transparent bg-gray-600 px-6 py-5 font-nunito text-lg font-bold leading-base text-gray-100 transition hover:border-2 hover:border-gray-500"
+            >
               <span>
                 <Image src={googleIcon} alt="Google Login" />
               </span>
               Entar com o Google
             </button>
-            <button className="flex w-full gap-5 rounded-lg bg-gray-600 px-6 py-5 font-nunito text-lg font-bold leading-base text-gray-100">
+            <button
+              onClick={() => signIn('github')}
+              className="flex gap-5 rounded-lg border-2 border-solid border-transparent bg-gray-600 px-6 py-5 font-nunito text-lg font-bold leading-base text-gray-100 transition hover:border-2 hover:border-gray-500"
+            >
               <span>
                 <Image src={githubIcon} alt="Google Login" />
               </span>
               Entrar com o Github
             </button>
             <Link
-              href={'/home'}
-              className="flex w-full gap-5 rounded-lg bg-gray-600 px-6 py-5 font-nunito text-lg font-bold leading-base text-gray-100"
+              href={'/'}
+              className="flex gap-5 rounded-lg border-2 border-solid border-transparent bg-gray-600 px-6 py-5 font-nunito text-lg font-bold leading-base text-gray-100 transition hover:border-2 hover:border-gray-500"
             >
               <span>
                 <Image src={rocketLauchIcon} alt="Google Login" />
