@@ -8,14 +8,16 @@ import Image from 'next/image'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import utc from 'dayjs/plugin/utc'
 
 dayjs.locale('pt-br')
+dayjs.extend(utc)
 dayjs.extend(relativeTime)
 
 const customStyles = {
   itemShapes: ThinRoundedStar,
   activeFillColor: '#8381D9',
-  inactiveFillColor: '#000000',
+  inactiveFillColor: '#181C2A',
   activeStrokeColor: '#8381D9', // Borda para estrelas inativas
   inactiveStrokeColor: '#8381D9', // Borda para estrelas inativas
   itemStrokeWidth: 2, // Largura da borda
@@ -23,7 +25,7 @@ const customStyles = {
 
 const reviews = tv({
   slots: {
-    base: 'flex p-6 flex-col',
+    base: 'flex p-6 flex-col w-full',
     header: 'flex justify-between',
     avatar:
       'flex h-11 w-11 items-center justify-center rounded-full bg-black bg-gradient-to-t from-[#9694F5] from-0% to-[#7FD1CC] to-100%',
@@ -71,7 +73,9 @@ export const Reviews = ({
                 {userName}
               </span>
               <span className="text-sm font-normal leading-base text-gray-400">
-                {dayjs(dateReview).fromNow()}
+                {dayjs.utc(dateReview).isSame(dayjs(), 'day')
+                  ? 'Hoje'
+                  : dayjs.utc(dateReview).local().fromNow()}
               </span>
             </div>
           </div>

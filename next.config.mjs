@@ -9,6 +9,7 @@ const nextConfig = {
       },
       { hostname: "objectstorage.sa-saopaulo-1.oraclecloud.com" },
       { hostname: "images.unsplash.com" },
+      { hostname: "lh3.googleusercontent.com" },
     ],
   },
 };

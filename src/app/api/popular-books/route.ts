@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
       orderBy: { ratings: { _count: 'desc' } },
       take: 4,
       include: {
-        ratings: { include: { user: true } },
+        ratings: { include: { user: true }, orderBy: { created_at: 'desc' } },
         categories: { include: { category: true } },
       },
     })
@@ -19,9 +19,10 @@ export async function GET(req: NextRequest) {
       return {
         ...book,
         // ratings: book.ratings.map((rating) => rating.rate),
-        averageRating:
+        averageRating: Math.round(
           book.ratings.reduce((acc, rating) => acc + rating.rate, 0) /
-          book.ratings.length,
+            book.ratings.length,
+        ),
       }
     })
 

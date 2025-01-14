@@ -3,17 +3,23 @@ import { NextRequest, NextResponse } from 'next/server'
 
 /* export const revalidate = 60 */
 
-export async function GET(req: NextRequest) {
+interface Params {
+  params: {
+    id: string
+  }
+}
+
+export async function GET(req: NextRequest, { params }: Params) {
   if (req.method !== 'GET') {
     return NextResponse.json({ error: 'Method not allowed' }, { status: 405 })
   }
   try {
-    const searchParams = req.nextUrl.searchParams
-    const categories = searchParams.get('categories')
-
-    const books = await prisma.book.findMany({
+    const books = await prisma.book.findUnique({
+      where: {
+        id: params.id,
+      },
       include: {
-        ratings: { include: { user: true }, orderBy: { created_at: 'desc' } },
+        ratings: { include: { user: true } },
         categories: {
           include: {
             category: true,
@@ -21,19 +27,46 @@ export async function GET(req: NextRequest) {
         },
       },
     })
+    const booksWithRatings = books && {
+      return: {
+        ...books,
+        // ratings: books.ratings.map((rating) => rating.rate),
+        averageRating: Math.floor(
+          books.ratings.reduce((acc, rating) => acc + rating.rate, 0) /
+            books.ratings.length,
+        ),
+      },
+    }
+    // const params = req.nextUrl.searchParams
+    // const id = params.get('id')
 
-    const booksWithRatings = books.map((book) => {
+    // const categories = params.
+
+    /* const books = await prisma.book.findUnique({
+      where: {
+        id: params.valueOf(),
+      },
+      include: {
+        ratings: { include: { user: true } },
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+      },
+    })
+ */
+    /* const booksWithRatings = books.map((book) => {
       return {
         ...book,
         // ratings: book.ratings.map((rating) => rating.rate),
-        averageRating: Math.round(
+        averageRating:
           book.ratings.reduce((acc, rating) => acc + rating.rate, 0) /
-            book.ratings.length,
-        ),
+          book.ratings.length,
       }
-    })
+    }) */
 
-    if (!categories) {
+    /* if (!categories) {
       return NextResponse.json({ books: booksWithRatings }, { status: 200 })
     }
 
@@ -48,10 +81,7 @@ export async function GET(req: NextRequest) {
         },
       },
       include: {
-        ratings: {
-          include: { user: { include: { ratings: true } } },
-          orderBy: { created_at: 'desc' },
-        },
+        ratings: { include: { user: { include: { ratings: true } } } },
         categories: {
           include: {
             category: true,
@@ -64,17 +94,13 @@ export async function GET(req: NextRequest) {
       return {
         ...book,
         // ratings: book.ratings.map((rating) => rating.rate),
-        averageRating: Math.round(
+        averageRating:
           book.ratings.reduce((acc, rating) => acc + rating.rate, 0) /
-            book.ratings.length,
-        ),
+          book.ratings.length,
       }
-    })
+    }) */
 
-    return NextResponse.json(
-      { books: booksWithFilterAndRatings },
-      { status: 200 },
-    )
+    return NextResponse.json({ books: booksWithRatings }, { status: 200 })
   } catch (error) {
     return NextResponse.json(
       { message: 'Algum erro ocorreu' + error },

@@ -4,7 +4,7 @@ import { tv, VariantProps } from 'tailwind-variants'
 
 const textInputContainer = tv({
   base: [
-    'bg-gray-800 py-3 px-4 group rounded-md duration-200 border border-solid border-gray-500 flex items-center',
+    'bg-gray-800 py-3 px-4 group rounded-md duration-200 border transition-colors border-solid border-gray-500 flex items-center',
     'focus-within:border-green-200',
     'disabled:opacity-50 disabled:cursor-not-allowed',
   ],

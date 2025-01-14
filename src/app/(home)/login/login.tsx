@@ -29,7 +29,7 @@ export default function Login() {
           </h3>
           <div className="mt-10 flex flex-col gap-4">
             <button
-              onClick={() => signIn('google')}
+              onClick={() => signIn('google', { redirectTo: '/' })}
               className="flex gap-5 rounded-lg border-2 border-solid border-transparent bg-gray-600 px-6 py-5 font-nunito text-lg font-bold leading-base text-gray-100 transition hover:border-2 hover:border-gray-500"
             >
               <span>
@@ -38,7 +38,7 @@ export default function Login() {
               Entar com o Google
             </button>
             <button
-              onClick={() => signIn('github')}
+              onClick={() => signIn('github', { redirectTo: '/' })}
               className="flex gap-5 rounded-lg border-2 border-solid border-transparent bg-gray-600 px-6 py-5 font-nunito text-lg font-bold leading-base text-gray-100 transition hover:border-2 hover:border-gray-500"
             >
               <span>

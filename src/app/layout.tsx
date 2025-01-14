@@ -4,6 +4,7 @@ import { Nunito } from 'next/font/google'
 import './globals.css'
 import ReactQueryProvider from './ReactQueryProvider'
 import AuthProvider from './auth-provider'
+import { Toaster } from 'sonner'
 
 const nunitoSans = Nunito({
   weight: ['400', '700'],
@@ -12,7 +13,10 @@ const nunitoSans = Nunito({
 })
 
 export const metadata: Metadata = {
-  title: 'Bookwise',
+  title: {
+    template: ' %s | BookWise',
+    default: 'Bookwise',
+  },
   description: 'Bookwise',
 }
 
@@ -25,7 +29,14 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={`${nunitoSans.variable} bg-gray-800 antialiased`}>
         <ReactQueryProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <Toaster
+              toastOptions={{
+                classNames: { error: 'bg-red-500 border-0' },
+              }}
+            />
+            {children}
+          </AuthProvider>
         </ReactQueryProvider>
       </body>
     </html>
