@@ -1,11 +1,13 @@
 'use client'
 import { Card } from '@/components/card'
+import { LastReviewUser } from '@/components/last-review-user'
 import { RecentReviews } from '@/components/recent-reviews'
 import { SideBar } from '@/components/sidebar'
 import { api } from '@/lib/axios'
 import { env } from '@/lib/env'
 import { CaretRight, ChartLine } from '@phosphor-icons/react/dist/ssr'
 import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 /* interface RecentReviewsProps {
@@ -35,6 +37,15 @@ export interface UserProps {
   name: string
   image: string
 }
+
+interface LastReviewUserProps {
+  id: string
+  rate: number
+  description: string
+  created_at: Date
+  book: BooksProps
+}
+
 interface RecentReviewsProps {
   id: string
   rate: number
@@ -71,6 +82,18 @@ interface PopularBooksProps {
 }
 
 export default function Home() {
+  const { data: session } = useSession()
+
+  const { data: lastReviewUser } = useQuery<LastReviewUserProps>({
+    queryKey: ['last-review-user'],
+    queryFn: async () => {
+      const { data } = await api.get(
+        `${env.NEXT_PUBLIC_BASE_URL}/api/last-review-user`,
+      )
+      return data.lastReviewUser
+    },
+  })
+
   const { data: recentsReviews } = useQuery<RecentReviewsProps[]>({
     queryKey: ['recent-reviews'],
     queryFn: async () => {
@@ -101,8 +124,19 @@ export default function Home() {
             Início
           </h1>
         </div>
-        <div className="mt-10 flex justify-between gap-16">
+        <div className="mt-10 flex flex-col justify-between gap-16 lg:flex-row">
           <article className="mb-10 flex w-full max-w-[608px] flex-col gap-3 2xl:max-w-none">
+            {session && (
+              <LastReviewUser
+                image={lastReviewUser?.book.cover_url ?? ''}
+                date={lastReviewUser?.created_at ?? new Date()}
+                rate={lastReviewUser?.rate ?? 0}
+                title={lastReviewUser?.book.name ?? ''}
+                author={lastReviewUser?.book.author ?? ''}
+                review={lastReviewUser?.description ?? ''}
+              />
+            )}
+
             <span className="font-nunito text-base font-normal leading-base text-gray-100">
               Avaliações mais recentes
             </span>
@@ -128,7 +162,7 @@ export default function Home() {
                 Livros Populares
               </span>
               <Link
-                href={'/home/explorar'}
+                href={'/explorar'}
                 className="flex items-center gap-3 font-nunito text-sm font-bold leading-base text-purple-100"
               >
                 Ver Todos
@@ -144,6 +178,7 @@ export default function Home() {
                   return (
                     <Card
                       key={popularBook.id}
+                      bookId={popularBook.id}
                       title={popularBook.name}
                       author={popularBook.author}
                       coverUrl={popularBook.cover_url}

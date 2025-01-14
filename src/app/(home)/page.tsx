@@ -5,6 +5,11 @@ import {
 } from '@tanstack/react-query'
 
 import Home from './home'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Início',
+}
 
 export default async function PageHome() {
   const queryClient = new QueryClient()
