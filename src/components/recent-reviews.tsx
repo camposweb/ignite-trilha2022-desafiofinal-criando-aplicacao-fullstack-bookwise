@@ -8,14 +8,16 @@ import Image from 'next/image'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import utc from 'dayjs/plugin/utc'
 
 dayjs.locale('pt-br')
+dayjs.extend(utc)
 dayjs.extend(relativeTime)
 
 const customStyles = {
   itemShapes: ThinRoundedStar,
   activeFillColor: '#8381D9',
-  inactiveFillColor: '#000000',
+  inactiveFillColor: '#181C2A',
   activeStrokeColor: '#8381D9', // Borda para estrelas inativas
   inactiveStrokeColor: '#8381D9', // Borda para estrelas inativas
   itemStrokeWidth: 2, // Largura da borda
@@ -98,7 +100,10 @@ export const RecentReviews = ({
                 {userName}
               </span>
               <span className="text-sm font-normal leading-base text-gray-400">
-                {dayjs(dateReview).fromNow()}
+                {/* {dayjs(dateReview).fromNow()} */}
+                {dayjs.utc(dateReview).isSame(dayjs(), 'day')
+                  ? 'Hoje'
+                  : dayjs.utc(dateReview).local().fromNow()}
               </span>
             </div>
           </div>
@@ -125,12 +130,14 @@ export const RecentReviews = ({
             <footer className={footer()}>
               <p className={sinopse()}>
                 {textExpand ? userReview : `${userReview.slice(0, limit)}...`}
-                <button
-                  onClick={handleExpandText}
-                  className="ml-2 font-nunito text-sm font-bold leading-base text-purple-100"
-                >
-                  {textExpand ? 'Ver menos' : 'Ver mais'}
-                </button>
+                {userReview.length > limit && (
+                  <button
+                    className="ml-2 font-nunito text-sm font-bold leading-base text-purple-100"
+                    onClick={handleExpandText}
+                  >
+                    {textExpand ? 'Ver menos' : 'Ver mais'}
+                  </button>
+                )}
               </p>
             </footer>
           </div>
