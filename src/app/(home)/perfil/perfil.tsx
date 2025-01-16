@@ -63,6 +63,7 @@ type FormSearchData = z.infer<typeof formSearchSchema>
 
 export default function Perfil() {
   const { data: session } = useSession()
+
   const [searchQuery, setSearchQuery] = useState('')
 
   const { handleSubmit, register } = useForm<FormSearchData>({
@@ -160,7 +161,7 @@ export default function Perfil() {
               <Separator.Root
                 orientation="horizontal"
                 decorative
-                className="mt-10 h-1 w-8 rounded-full bg-white"
+                className="mt-10 h-1 w-8 rounded-full bg-white bg-gradient-to-l from-[#9694F5] from-0% to-[#7FD1CC] to-100%"
               />
               <div className="mt-14 flex flex-col gap-10">
                 <ItemInfoIcon

@@ -82,13 +82,11 @@ export const Card = ({
   function handleCloseNewReaviewExpand() {
     setAnimate(false)
     setNewReaviewExpand(false)
-    /* setAnimate(false)
-    setNewReaviewExpand(false) */
-    /*  setTimeout(() => {
-      setNewReaviewExpand(false)
-    }, 500) */
-    // setNewReaviewExpand(false)
   }
+
+  const existsRatingUser = ratings.filter(
+    (rating) => rating.user.id === session?.user?.id,
+  )
 
   return (
     <Dialog.Root>
@@ -155,9 +153,6 @@ export const Card = ({
                     />
                   </span>
                   <span className="font-nunito text-sm font-normal leading-base text-gray-400">
-                    {/* {totalReviews === 1 && `${totalReviews} avaliação`}
-                    {totalReviews > 1 && `${totalReviews} avaliações`}
-                    {totalReviews === null && `Sem avaliações`} */}
                     {ratings.length === 1 && `${ratings.length} avaliação`}
                     {ratings.length > 1 && `${ratings.length} avaliações`}
                     {ratings.length < 1 && `Sem avaliações`}
@@ -208,7 +203,8 @@ export const Card = ({
                 onClick={handleNewReaviewExpand}
                 className="font-nunito text-base font-bold leading-base text-purple-100"
               >
-                {newReaviewExpand ? '' : 'Avaliar'}
+                {existsRatingUser.length === 0 ? 'Avaliar' : ''}
+                {existsRatingUser.length > 0 && ''}
               </button>
             )}
           </div>
