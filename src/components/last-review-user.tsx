@@ -82,7 +82,7 @@ export const LastReviewUser = ({
             src={image}
             width={108}
             height={152}
-            alt={'image'}
+            alt={`${title}`}
             className={imageBook()}
           />
           <div className="flex w-full flex-col">
