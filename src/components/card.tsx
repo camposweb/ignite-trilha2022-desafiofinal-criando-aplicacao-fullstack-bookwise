@@ -1,18 +1,22 @@
+'use client'
 import Image from 'next/image'
 import * as Dialog from '@radix-ui/react-dialog'
-import { ComponentProps } from 'react'
+import { ComponentProps, useState } from 'react'
 import { tv, VariantProps } from 'tailwind-variants'
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating'
 import '@smastrom/react-rating/style.css'
 import { X, BookmarkSimple, BookOpen } from '@phosphor-icons/react/dist/ssr'
 import { Box } from './box'
 import { Reviews } from './reviews'
-import { RatingsProps } from '@/app/(login)/home/home'
+import { NewReview } from './new-review'
+import { RatingsProps } from '@/app/(home)/home'
+import { useSession } from 'next-auth/react'
+import { DialogLogin } from './dialog-login'
 
 const customStyles = {
   itemShapes: ThinRoundedStar,
   activeFillColor: '#8381D9',
-  inactiveFillColor: '#000000',
+  inactiveFillColor: '#181C2A',
   activeStrokeColor: '#8381D9', // Borda para estrelas inativas
   inactiveStrokeColor: '#8381D9', // Borda para estrelas inativas
   itemStrokeWidth: 2, // Largura da borda
@@ -42,11 +46,11 @@ type CardType = ComponentProps<'figure'> & VariantProps<typeof card>
 const { base, titleBook, authorBook, footer, wrapper } = card()
 
 interface CardProps extends CardType {
+  bookId: string
   title: string
   author: string
   coverUrl: string
   rating: number
-  totalReviews: number
   memberAvatar?: string
   avalaliationDate?: string
   totalPages: number
@@ -55,17 +59,37 @@ interface CardProps extends CardType {
 }
 
 export const Card = ({
+  bookId,
   title,
   author,
   coverUrl,
   rating,
-  totalReviews,
   totalPages,
   ratings,
   categories,
   variants,
   ...props
 }: CardProps) => {
+  const [newReaviewExpand, setNewReaviewExpand] = useState(false)
+  const [animate, setAnimate] = useState(false)
+
+  const { data: session } = useSession()
+
+  function handleNewReaviewExpand() {
+    setAnimate(true)
+    setNewReaviewExpand(true)
+  }
+  function handleCloseNewReaviewExpand() {
+    setAnimate(false)
+    setNewReaviewExpand(false)
+    /* setAnimate(false)
+    setNewReaviewExpand(false) */
+    /*  setTimeout(() => {
+      setNewReaviewExpand(false)
+    }, 500) */
+    // setNewReaviewExpand(false)
+  }
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
@@ -94,8 +118,11 @@ export const Card = ({
         </figure>
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.DialogOverlay className="fixed inset-0 bg-gray-800/60 data-[state=open]:animate-fade" />
-        <Dialog.Content className="fixed right-0 top-0 h-screen overflow-auto bg-gray-800 px-12 animate-duration-500 animate-ease-linear data-[state=closed]:animate-fade-left data-[state=open]:animate-fade-left data-[state=open]:animate-delay-100 data-[state=closed]:animate-reverse data-[state=open]:animate-duration-500 data-[state=closed]:animate-ease-in-out data-[state=open]:animate-ease-in-out lg:w-[660px]">
+        <Dialog.DialogOverlay className="fixed inset-0 z-0 bg-gray-800/60 data-[state=open]:animate-fade" />
+        <Dialog.Content className="fixed right-0 top-0 h-screen overflow-auto bg-gray-800 px-12 animate-duration-500 animate-ease-linear data-[state=closed]:animate-fade-left data-[state=open]:animate-fade-left data-[state=open]:animate-delay-100 data-[state=closed]:animate-reverse data-[state=open]:animate-duration-500 data-[state=closed]:animate-ease-in-out data-[state=open]:animate-ease-in-out lg:max-w-[660px] 2xl:max-w-[660px]">
+          <Dialog.Title className="sr-only">
+            Dados do livro selecionado
+          </Dialog.Title>
           <Dialog.Description className="sr-only">
             Dados do Livro
           </Dialog.Description>
@@ -128,9 +155,14 @@ export const Card = ({
                     />
                   </span>
                   <span className="font-nunito text-sm font-normal leading-base text-gray-400">
-                    {totalReviews === 1 && `${totalReviews} avaliação`}
+                    {/* {totalReviews === 1 && `${totalReviews} avaliação`}
                     {totalReviews > 1 && `${totalReviews} avaliações`}
-                    {totalReviews === null && `Sem avaliações`}
+                    {totalReviews === null && `Sem avaliações`} */}
+                    {ratings.length === 1 && `${ratings.length} avaliação`}
+                    {ratings.length > 1 && `${ratings.length} avaliações`}
+                    {ratings.length < 1 && `Sem avaliações`}
+                    {ratings.length === null &&
+                      `${ratings.length} Sem avaliações`}
                   </span>
                 </footer>
               </div>
@@ -170,11 +202,24 @@ export const Card = ({
             <span className="font-nunito text-sm font-normal leading-base text-gray-200">
               Avaliações
             </span>
-            <button className="font-nunito text-base font-bold leading-base text-purple-100">
-              Avaliar
-            </button>
+            {!session && <DialogLogin />}
+            {session && (
+              <button
+                onClick={handleNewReaviewExpand}
+                className="font-nunito text-base font-bold leading-base text-purple-100"
+              >
+                {newReaviewExpand ? '' : 'Avaliar'}
+              </button>
+            )}
           </div>
           <div className="mt-6 flex flex-col gap-3 pb-5">
+            {session && newReaviewExpand && (
+              <NewReview
+                onClose={handleCloseNewReaviewExpand}
+                bookId={bookId}
+                animate={animate}
+              />
+            )}
             {ratings.map((rating) => (
               <Reviews
                 key={rating.id}
@@ -183,6 +228,7 @@ export const Card = ({
                 dateReview={rating.created_at}
                 userRate={rating.rate}
                 userReview={rating.description}
+                className="first:bg-gray-600"
               />
             ))}
           </div>
