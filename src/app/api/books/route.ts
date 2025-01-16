@@ -10,8 +10,25 @@ export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams
     const categories = searchParams.get('categories')
+    const search = searchParams.get('search')
 
     const books = await prisma.book.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              contains: search || '',
+              mode: 'insensitive',
+            },
+          },
+          {
+            author: {
+              contains: search || '',
+              mode: 'insensitive',
+            },
+          },
+        ],
+      },
       include: {
         ratings: { include: { user: true }, orderBy: { created_at: 'desc' } },
         categories: {
@@ -39,13 +56,33 @@ export async function GET(req: NextRequest) {
 
     const booksWithFilter = await prisma.book.findMany({
       where: {
-        categories: {
-          some: {
-            category: {
-              name: categories,
+        AND: [
+          {
+            categories: {
+              some: {
+                category: {
+                  name: categories,
+                },
+              },
             },
           },
-        },
+          {
+            OR: [
+              {
+                name: {
+                  contains: search || '',
+                  mode: 'insensitive',
+                },
+              },
+              {
+                author: {
+                  contains: search || '',
+                  mode: 'insensitive',
+                },
+              },
+            ],
+          },
+        ],
       },
       include: {
         ratings: {
