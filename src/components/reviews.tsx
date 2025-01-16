@@ -17,7 +17,7 @@ dayjs.extend(relativeTime)
 const customStyles = {
   itemShapes: ThinRoundedStar,
   activeFillColor: '#8381D9',
-  inactiveFillColor: '#181C2A',
+  // inactiveFillColor: '#181C2A',
   activeStrokeColor: '#8381D9', // Borda para estrelas inativas
   inactiveStrokeColor: '#8381D9', // Borda para estrelas inativas
   itemStrokeWidth: 2, // Largura da borda
