@@ -84,7 +84,7 @@ interface PopularBooksProps {
 export default function Home() {
   const { data: session } = useSession()
 
-  const { data: lastReviewUser } = useQuery<LastReviewUserProps>({
+  const { data: lastReviewUser, isLoading } = useQuery<LastReviewUserProps>({
     queryKey: ['last-review-user'],
     queryFn: async () => {
       const { data } = await api.get(
@@ -92,6 +92,7 @@ export default function Home() {
       )
       return data.lastReviewUser
     },
+    enabled: !!session,
   })
 
   const { data: recentsReviews } = useQuery<RecentReviewsProps[]>({
@@ -126,7 +127,7 @@ export default function Home() {
         </div>
         <div className="mt-10 flex flex-col justify-between gap-16 lg:flex-row">
           <article className="mb-10 flex w-full max-w-[608px] flex-col gap-3 2xl:max-w-none">
-            {session && (
+            {session && lastReviewUser && !isLoading && (
               <LastReviewUser
                 image={lastReviewUser?.book.cover_url ?? ''}
                 date={lastReviewUser?.created_at ?? new Date()}
@@ -183,7 +184,6 @@ export default function Home() {
                       author={popularBook.author}
                       coverUrl={popularBook.cover_url}
                       rating={popularBook.averageRating ?? 0}
-                      totalReviews={popularBook.ratings.length}
                       totalPages={popularBook.total_pages}
                       ratings={popularBook.ratings}
                       categories={categories}
