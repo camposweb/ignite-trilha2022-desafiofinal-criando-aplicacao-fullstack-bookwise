@@ -75,9 +75,6 @@ interface PopularBooksProps {
 } */
 
 export default function Home() {
-  if (!env.NEXT_PUBLIC_BASE_URL) {
-    return null
-  }
   // const { data: session } = useSession()
 
   /* const { data: lastReviewUser, isLoading } = useQuery<LastReviewUserProps>({
