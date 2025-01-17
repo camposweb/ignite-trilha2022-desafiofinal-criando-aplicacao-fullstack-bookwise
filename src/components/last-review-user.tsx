@@ -66,7 +66,7 @@ export const LastReviewUser = ({
     <>
       <div className="flex justify-between">
         <span className="font-nunito text-base font-normal leading-base text-gray-100">
-          Sua última leituras
+          Sua última leitura
         </span>
         <Link
           href={'/perfil'}

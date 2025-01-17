@@ -199,6 +199,7 @@ export const NewReview = forwardRef<HTMLFormElement, NewReviewProps>(
             placeholder="Escreva sua avaliação"
             {...register('description')}
             onChange={handleLimitCaracteres}
+            maxLength={maxCaracterer}
           />
           <span className="flex justify-end pt-1 font-nunito text-xs font-normal leading-base text-[#7C7C8A]">
             {`${text?.length || 0}/${maxCaracterer}`}

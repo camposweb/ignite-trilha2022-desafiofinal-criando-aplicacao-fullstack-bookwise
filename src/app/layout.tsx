@@ -5,6 +5,7 @@ import './globals.css'
 import ReactQueryProvider from './ReactQueryProvider'
 import AuthProvider from './auth-provider'
 import { Toaster } from 'sonner'
+import { Analytics } from '@vercel/analytics/react'
 
 const nunitoSans = Nunito({
   weight: ['400', '700'],
@@ -38,6 +39,7 @@ export default function RootLayout({
             {children}
           </AuthProvider>
         </ReactQueryProvider>
+        <Analytics />
       </body>
     </html>
   )
