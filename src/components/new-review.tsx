@@ -19,7 +19,6 @@ import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'sonner'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
-import { env } from '@/lib/env'
 
 const customStyles = {
   itemShapes: ThinRoundedStar,
@@ -120,7 +119,7 @@ export const NewReview = forwardRef<HTMLFormElement, NewReviewProps>(
 
     const { mutate } = useMutation({
       mutationFn: async (data: FormNewReviewData) => {
-        return await api.post(`${env.NEXT_PUBLIC_BASE_URL}/api/new-review`, {
+        return await api.post(`/new-review`, {
           userId: data.userId,
           bookId: data.bookId,
           description: data.description,
