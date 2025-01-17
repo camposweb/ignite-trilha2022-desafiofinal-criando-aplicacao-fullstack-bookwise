@@ -79,7 +79,7 @@ export function Explorar() {
   const { data: books } = useQuery<BooksProps[]>({
     queryKey: ['books', categoryName, searchQuery],
     queryFn: async () => {
-      const { data } = await api.get(`${env.NEXT_PUBLIC_BASE_URL}/api/books`, {
+      const { data } = await api.get(`/books`, {
         params: {
           categories: categoryName,
           search: searchQuery,

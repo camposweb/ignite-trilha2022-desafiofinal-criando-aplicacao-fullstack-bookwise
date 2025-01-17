@@ -4,7 +4,7 @@ import { ReviewProfile } from '@/components/review-profile'
 import { SearchInput } from '@/components/search-input'
 import { SideBar } from '@/components/sidebar'
 import { api } from '@/lib/axios'
-import { env } from '@/lib/env'
+
 import {
   BookmarkSimple,
   BookOpen,
@@ -73,14 +73,11 @@ export default function Perfil() {
   const { data: reviewsProfile } = useQuery<ReviewsProfileProps[]>({
     queryKey: ['reviews-profile', searchQuery],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${env.NEXT_PUBLIC_BASE_URL}/api/reviews-profile`,
-        {
-          params: {
-            book: searchQuery,
-          },
+      const { data } = await api.get(`/reviews-profile`, {
+        params: {
+          book: searchQuery,
         },
-      )
+      })
       return data.reviewsProfile
     },
   })
@@ -88,7 +85,7 @@ export default function Perfil() {
   const { data: profile } = useQuery<ProfileProps>({
     queryKey: ['profile'],
     queryFn: async () => {
-      const { data } = await api.get(`${env.NEXT_PUBLIC_BASE_URL}/api/profile`)
+      const { data } = await api.get(`/profile`)
       return data
     },
   })
