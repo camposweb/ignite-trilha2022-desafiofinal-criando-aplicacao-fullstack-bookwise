@@ -9,7 +9,6 @@ import { X, BookmarkSimple, BookOpen } from '@phosphor-icons/react/dist/ssr'
 import { Box } from './box'
 import { Reviews } from './reviews'
 import { NewReview } from './new-review'
-import { RatingsProps } from '@/app/(home)/home'
 import { useSession } from 'next-auth/react'
 import { DialogLogin } from './dialog-login'
 
@@ -44,6 +43,20 @@ const card = tv({
 type CardType = ComponentProps<'figure'> & VariantProps<typeof card>
 
 const { base, titleBook, authorBook, footer, wrapper } = card()
+
+interface UserProps {
+  id: string
+  name: string
+  image: string
+}
+
+interface RatingsProps {
+  id: string
+  rate: number
+  description: string
+  created_at: Date
+  user: UserProps
+}
 
 interface CardProps extends CardType {
   bookId: string
