@@ -9,12 +9,24 @@ import { Binoculars } from '@phosphor-icons/react/dist/ssr'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useCallback, useEffect, useState } from 'react'
-import { RatingsProps } from '../home'
 import { SideBar } from '@/components/sidebar'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
+interface UserProps {
+  id: string
+  name: string
+  image: string
+}
+
+interface RatingsProps {
+  id: string
+  rate: number
+  description: string
+  created_at: Date
+  user: UserProps
+}
 interface CategoriesProps {
   id: string
   name: string
