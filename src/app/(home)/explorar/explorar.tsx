@@ -4,7 +4,6 @@ import { Categories } from '@/components/categories'
 import { CategoryContainer } from '@/components/category-container'
 import { SearchInput } from '@/components/search-input'
 import { api } from '@/lib/axios'
-import { env } from '@/lib/env'
 import { Binoculars } from '@phosphor-icons/react/dist/ssr'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
@@ -67,9 +66,7 @@ export function Explorar() {
   const { data: categories } = useQuery<CategoriesProps[]>({
     queryKey: ['categories'],
     queryFn: async () => {
-      const { data } = await api.get(
-        `${env.NEXT_PUBLIC_BASE_URL}/api/categories`,
-      )
+      const { data } = await api.get(`/categories`)
       return data.categories
     },
   })
