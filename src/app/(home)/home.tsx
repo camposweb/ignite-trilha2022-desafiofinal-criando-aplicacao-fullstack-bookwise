@@ -1,7 +1,6 @@
 'use client'
 
 import { SideBar } from '@/components/sidebar'
-import { env } from '@/lib/env'
 
 /* interface RecentReviewsProps {
   id: string
