@@ -8,7 +8,7 @@ import { env } from '@/lib/env'
 import { Binoculars } from '@phosphor-icons/react/dist/ssr'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { Suspense, useCallback, useEffect, useState } from 'react'
 import { RatingsProps } from '../home'
 import { SideBar } from '@/components/sidebar'
 import { z } from 'zod'
@@ -105,7 +105,7 @@ export function Explorar() {
   }, [queryClient])
 
   return (
-    <>
+    <Suspense>
       <SideBar />
       <div className="flex w-full flex-col">
         <div className="mt-[72px] flex flex-col items-center gap-3 pr-24 lg:flex-row lg:justify-between">
@@ -183,6 +183,6 @@ export function Explorar() {
             })}
         </div>
       </div>
-    </>
+    </Suspense>
   )
 }

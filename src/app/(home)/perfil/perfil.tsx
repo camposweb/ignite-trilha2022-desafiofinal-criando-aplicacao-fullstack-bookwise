@@ -23,7 +23,7 @@ import Image from 'next/image'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 dayjs.locale('pt-br')
 dayjs.extend(utc)
@@ -107,7 +107,7 @@ export default function Perfil() {
   }, [queryClient])
 
   return (
-    <>
+    <Suspense>
       <SideBar />
       <div className="flex w-full flex-col">
         <div className="mt-[72px] flex items-center gap-3">
@@ -198,6 +198,6 @@ export default function Perfil() {
           )}
         </div>
       </div>
-    </>
+    </Suspense>
   )
 }
