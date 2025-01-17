@@ -115,10 +115,6 @@ export default function Home() {
     },
   })
 
-  if (!env.NEXT_PUBLIC_BASE_URL) {
-    return
-  }
-
   return (
     <>
       <SideBar />
