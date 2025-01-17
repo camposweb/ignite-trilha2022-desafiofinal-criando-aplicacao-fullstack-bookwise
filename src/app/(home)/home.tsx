@@ -1,14 +1,7 @@
 'use client'
-import { Card } from '@/components/card'
-import { LastReviewUser } from '@/components/last-review-user'
-import { RecentReviews } from '@/components/recent-reviews'
+
 import { SideBar } from '@/components/sidebar'
-import { api } from '@/lib/axios'
 import { env } from '@/lib/env'
-import { CaretRight, ChartLine } from '@phosphor-icons/react/dist/ssr'
-import { useQuery } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
-import Link from 'next/link'
 
 /* interface RecentReviewsProps {
   id: string
@@ -22,7 +15,7 @@ import Link from 'next/link'
   userReview: string
 } */
 
-interface BooksProps {
+/* interface BooksProps {
   id: string
   name: string
   author: string
@@ -79,12 +72,15 @@ interface PopularBooksProps {
   total_pages: number
   ratings: RatingsProps[]
   categories: CategoriesProps[]
-}
+} */
 
 export default function Home() {
-  const { data: session } = useSession()
+  if (!env.NEXT_PUBLIC_BASE_URL) {
+    return null
+  }
+  // const { data: session } = useSession()
 
-  const { data: lastReviewUser, isLoading } = useQuery<LastReviewUserProps>({
+  /* const { data: lastReviewUser, isLoading } = useQuery<LastReviewUserProps>({
     queryKey: ['last-review-user'],
     queryFn: async () => {
       const { data } = await api.get(
@@ -113,12 +109,12 @@ export default function Home() {
       )
       return data.popularBooks
     },
-  })
+  }) */
 
   return (
     <>
       <SideBar />
-      <div className="flex w-full flex-col">
+      {/* <div className="flex w-full flex-col">
         <div className="mt-[72px] flex items-center gap-3">
           <ChartLine size={32} className="text-green-100" />
           <h1 className="font-nunito text-2xl font-bold leading-base text-gray-200">
@@ -193,7 +189,7 @@ export default function Home() {
             </div>
           </section>
         </div>
-      </div>
+      </div> */}
     </>
   )
 }
