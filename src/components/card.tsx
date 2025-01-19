@@ -115,7 +115,7 @@ export const Card = ({
       <Dialog.Trigger asChild>
         <figure {...props} className={base({ variants })}>
           {pathname === '/explorar' && ratingsUser.length > 0 && (
-            <span className="absolute -right-0.5 -top-0.5 rounded-bl rounded-tr-lg bg-green-300 bg-transparent px-3 py-1 font-nunito text-xs font-bold leading-short text-green-100">
+            <span className="absolute -right-0.5 -top-0.5 rounded-bl rounded-tr-lg bg-green-300 px-3 py-1 font-nunito text-xs font-bold leading-short text-green-100">
               LIDO
             </span>
           )}
