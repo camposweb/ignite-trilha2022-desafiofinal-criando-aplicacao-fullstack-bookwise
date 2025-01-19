@@ -158,7 +158,7 @@ export default function Home() {
               </span>
               <Link
                 href={'/explorar'}
-                className="flex items-center gap-3 font-nunito text-sm font-bold leading-base text-purple-100"
+                className="text-purple-10 flex items-center gap-2 rounded-sm px-3 py-1 font-nunito text-sm font-bold leading-base text-purple-100 hover:bg-purple-100/5"
               >
                 Ver Todos
                 <CaretRight size={16} />
@@ -181,6 +181,7 @@ export default function Home() {
                       totalPages={popularBook.total_pages}
                       ratings={popularBook.ratings}
                       categories={categories}
+                      variants="hover"
                     />
                   )
                 })}

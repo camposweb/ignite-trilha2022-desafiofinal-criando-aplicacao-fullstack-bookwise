@@ -187,6 +187,7 @@ export function Explorar() {
                   totalPages={book.total_pages}
                   categories={categories}
                   ratings={book.ratings}
+                  variants="explorar"
                 />
               )
             })}

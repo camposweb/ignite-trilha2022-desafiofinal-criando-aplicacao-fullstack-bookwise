@@ -11,6 +11,7 @@ import { Reviews } from './reviews'
 import { NewReview } from './new-review'
 import { useSession } from 'next-auth/react'
 import { DialogLogin } from './dialog-login'
+import { usePathname } from 'next/navigation'
 
 const customStyles = {
   itemShapes: ThinRoundedStar,
@@ -23,8 +24,9 @@ const customStyles = {
 
 const card = tv({
   slots: {
-    base: 'bg-gray-700 flex rounded-lg relative cursor-pointer py-4 px-5 gap-5 border-2 border-solid border-transparent hover:border-gray-600 transition',
+    base: 'bg-gray-700 flex rounded-lg relative cursor-pointer group py-4 px-5 gap-5 border-2 border-solid border-transparent ',
     header: 'flex justify-between',
+    image: 'h-[94px] w-[64px]',
     wrapper: 'flex flex-col',
     titleBook:
       'font-nunito text-base font-bold leading-short text-gray-100 line-clamp-2',
@@ -35,7 +37,8 @@ const card = tv({
   },
   variants: {
     variants: {
-      read: '',
+      explorar: 'py-7',
+      hover: 'hover:border-gray-600 transition',
     },
   },
 })
@@ -86,6 +89,8 @@ export const Card = ({
   const [newReaviewExpand, setNewReaviewExpand] = useState(false)
   const [animate, setAnimate] = useState(false)
 
+  const pathname = usePathname()
+
   const { data: session } = useSession()
 
   function handleNewReaviewExpand() {
@@ -101,16 +106,25 @@ export const Card = ({
     (rating) => rating.user.id === session?.user?.id,
   )
 
+  const ratingsUser = ratings.filter(
+    (rating) => rating.user.id === session?.user?.id,
+  )
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
         <figure {...props} className={base({ variants })}>
+          {pathname === '/explorar' && ratingsUser.length > 0 && (
+            <span className="absolute -right-0.5 -top-0.5 rounded-bl rounded-tr-lg bg-green-300 bg-transparent px-3 py-1 font-nunito text-xs font-bold leading-short text-green-100">
+              LIDO
+            </span>
+          )}
           <Image
             src={coverUrl}
             alt={coverUrl}
-            width={64}
-            height={94}
-            className="h-[94px] w-[64px]"
+            width={108}
+            height={152}
+            className={`${pathname === '/explorar' ? 'h-[152px] w-[108px]' : 'h-[94px] w-[64px]'} bg-cover`}
           />
           <div className={wrapper()}>
             <figcaption>

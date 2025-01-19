@@ -70,7 +70,7 @@ export const LastReviewUser = ({
         </span>
         <Link
           href={'/perfil'}
-          className="flex items-center gap-3 font-nunito text-sm font-bold leading-base text-purple-100"
+          className="text-purple-10 flex items-center gap-2 rounded-sm px-3 py-1 font-nunito text-sm font-bold leading-base text-purple-100 hover:bg-purple-100/5"
         >
           Ver Todas
           <CaretRight size={16} />
